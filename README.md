@@ -22,7 +22,7 @@ CREATE TABLE new_table (
 );
 CREATE UNIQUE INDEX new_table_name_unique_index
     ON new_table_name(name,"offset");
-``
+```
 
 Now to get the the new_table into the database, you should run this
 
