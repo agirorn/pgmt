@@ -1,0 +1,12 @@
+{
+  "name": "pg-play",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "exit 1"
+  },
+  "dependencies": {
+    "embedded-postgres-cli": "^0.0.2"
+  }
+}
