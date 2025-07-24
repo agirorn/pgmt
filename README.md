@@ -5,6 +5,9 @@
 ## Install
 
 ```shell
+cargo install --git https://github.com/agirorn/pgmt --branch main pgmt
+
+# When it will be deployed to crates.io
 cargo install pgmt
 ```
 

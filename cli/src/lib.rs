@@ -26,7 +26,6 @@ pub async fn run(cli: Cli) {
         Commands::Migrate { url, directories } => {
             let placeholders = collect_placeholders_from_environment_variable();
             println!("URL: {}", url);
-            println!("URL: {}", url);
             for dir in directories.clone() {
                 println!("Directory: {}", dir);
             }
