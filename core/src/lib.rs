@@ -49,6 +49,7 @@ where
     let migrations: Vec<String> = migrations.into_iter().map(Into::into).collect();
     let cfg = new_cfg(url);
     let files = read_sql_files(migrations.clone())?;
+    println!("files: {files:#?}");
     let pool = create_pool(&cfg).await?;
     migrate(&pool, files, placeholders).await?;
     Ok(())
@@ -174,11 +175,13 @@ pub async fn migrate(
         .into_iter()
         .filter(|f| matches!(f.kind(), Some(SqlFileKind::V(_))))
         .collect();
+    println!("files X: {files:#?}");
 
     let client = get_client(pool).await?;
     create_schema_history_if_needed(&client).await?;
     let files = filter_out_and_verify_privious_migrations(&client, files).await?;
 
+    println!("files: {files:#?}");
     for file in &files {
         // running each migration in order.
         // TODO: wrap this in a transaction
@@ -246,10 +249,12 @@ pub async fn migrate(
         // We should handle error whew better and do a rollback if we can
         match client.batch_execute(&content).await {
             Ok(_) => {
+                println!("OK");
                 client.query("COMMIT;", &[]).await?;
                 Ok(())
             }
             Err(e) => {
+                println!("error {}", e);
                 client.query("ROLLBACK;", &[]).await?;
                 Err(e)
             }
