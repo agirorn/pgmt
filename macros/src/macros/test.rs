@@ -2,8 +2,9 @@ use proc_macro::TokenStream;
 use quote::quote;
 use std::collections::HashMap;
 use syn::{
+    FnArg, ItemFn, Lit, MetaNameValue, Pat, PatIdent, Result, Token, Type,
     parse::{Parse, ParseStream},
-    parse_macro_input, FnArg, ItemFn, Lit, MetaNameValue, Pat, PatIdent, Result, Token, Type,
+    parse_macro_input,
 };
 
 struct PgmtArgs {
@@ -143,6 +144,19 @@ pub fn test(attr: TokenStream, item: TokenStream) -> TokenStream {
         .iter()
         .map(|(k, v)| quote! { (#k.to_string(), #v.to_string()) });
 
+    let result = match &input_fn.sig.output {
+        syn::ReturnType::Default => quote! {
+            pgmt_core::test_migration(migrations, placeholders, async move |#arg_name| {
+                inner(#arg_name).await
+            }).await;
+        },
+        syn::ReturnType::Type(_, _) => quote! {
+            pgmt_core::test_migration(migrations, placeholders, async move |#arg_name| {
+                inner(#arg_name).await
+            }).await
+        },
+    };
+
     let expanded = quote! {
         #[tokio::test]
         #vis #asyncness fn #fn_name() #output {
@@ -153,9 +167,7 @@ pub fn test(attr: TokenStream, item: TokenStream) -> TokenStream {
                 #user_block
             }
 
-            pgmt_core::test_migration(migrations, placeholders, async move |#arg_name| {
-                inner(#arg_name).await;
-            }).await;
+            #result
         }
     };
 

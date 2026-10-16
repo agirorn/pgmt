@@ -50,4 +50,5 @@ tokio-postgres = { workspace = true }
 assert_cmd = { workspace = true }
 indoc = { workspace = true }
 serde = { workspace = true }
+thiserror = "2.0.21"
 tokio-postgres = { workspace = true }

@@ -35,3 +35,15 @@ async fn test_fuction_2(pool: pgmt::Pool) {
         vec_of_string!["_schema_history", "table_1_name", "table_2_name",]
     );
 }
+
+use thiserror::Error;
+#[derive(Error, Debug)]
+pub enum MyError {
+    #[error("Message")]
+    Mesasge(String),
+}
+
+#[pgmt::test(placeholder_env = "env_value")]
+async fn test_fuction_that_has_a_return_value(_pool: pgmt::Pool) -> Result<(), MyError> {
+    Ok(())
+}
