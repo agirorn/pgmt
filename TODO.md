@@ -26,3 +26,19 @@
     for multiple schema migrations. It would also probably be nice to also
     support a file path to file that has this same capabilities and also to have
     a default file that would be piked up automatically.
+
+11. Should fail if the migrataion folder does not exist.
+    When using `pgmt::test(migrations =` and the folder ponted to does note
+    exisit, then the tests should simply fail stating the migration folder was
+    not found.
+    If it is quite frustrating to try to figure out what is goint on and there
+    is no reason to use pgmt::test if ther should be not migratiaon executed.
+    Also when moving the migrations during refactoring, the it is quite anoying
+    to not get a good error message.
+    #[pgmt::test(migrations = "../../none/exisiting/folder")]
+
+11. Should always fail if not migrataion are found.
+    There should be not reason to run this tool if there are not migrataions to
+    execute and in manay cases it whould be a bug of some sort related to
+    misconfigurataion resulting in no migrataion beeing found.
+    This shoudl go for both tests and cli use
