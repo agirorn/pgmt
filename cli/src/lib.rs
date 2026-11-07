@@ -39,6 +39,7 @@ pub async fn run(cli: Cli) {
 #[derive(Parser)]
 #[command(name = "pgmt")]
 #[command(about = "PostgreSQL Migration Tool")]
+#[command(version)]
 pub struct Cli {
     #[command(subcommand)]
     command: Commands,
